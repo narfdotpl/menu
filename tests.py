@@ -13,8 +13,12 @@ class EndUserTests(TestCase):
     def test_simple_clicks_work(self):
         result = menu.argv_to_applescript(['menu.py', 'app', 'menu', 'item'])
         self.assertEqual(result, """
+tell application "app"
+    activate
+end tell
+
 tell application "System Events"
-    tell application "app"
+    tell process "app"
         tell menu bar 1
             tell menu bar item "menu"
                 tell menu "menu"
@@ -30,12 +34,16 @@ end tell
         result = menu.argv_to_applescript(['menu.py', 'app', 'menu',
                                            'submenu', 'item'])
         self.assertEqual(result, """
+tell application "app"
+    activate
+end tell
+
 tell application "System Events"
-    tell application "app"
+    tell process "app"
         tell menu bar 1
             tell menu bar item "menu"
                 tell menu "menu"
-                    tell menu bar item "submenu"
+                    tell menu item "submenu"
                         tell menu "submenu"
                             click menu item "item"
                         end tell
